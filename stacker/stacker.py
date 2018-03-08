@@ -23,7 +23,7 @@ def cfn(action, *args):
     arg = ' '.join(args)
     print_command(f"aws cloudformation {action} {arg}")
     if not cfn_dryrun:
-        subprocess.call("aws", "cloudformation", action, arg.split())
+        subprocess.run(["aws", "cloudformation", action]+arg.split())
 
 
 def _template_body(file):
