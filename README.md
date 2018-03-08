@@ -24,6 +24,18 @@ Options:
     -p, --profile       specify AWS_PROFILE
 ```
 
+## Installation
+
+With homebrew:
+
+```shell
+brew install --HEAD yuuki/stacker/stacker
+```
+
+```shell
+pip3 install git+https://github.com/yuuki/stacker
+```
+
 ## Directory Layout
 
 ```shell
