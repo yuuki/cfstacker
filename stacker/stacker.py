@@ -159,10 +159,10 @@ def main():
         os.environ['AWS_PROFILE'] = opts.profile
 
     cur_dir = os.getcwd()
-    stacks_dir = f"{cur_dir}/stacks"
+    stacks_dir = os.path.join(cur_dir, 'stacks')
 
     action, stack = args[0], args[1]
-    project = os.path.basename(os.path.abspath(stacks_dir+'../'))
+    project = os.path.basename(os.path.abspath(os.path.join(stacks_dir, '..')))
     environment = opts.environment if opts.environment is not None else 'prod'
     stack_name = opts.stack_name if opts.stack_name is not None else f"{project}-{environment}-{stack}"
 
