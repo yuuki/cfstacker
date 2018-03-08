@@ -179,8 +179,8 @@ def main():
 
     files = {
         "template": template_file,
-        "parameters": f"{stacks_dir}/{stack}/parameters/{environment}.yml",
-        "policy": f"{stacks_dir}/{stack}/policy.yml",
+        "parameters": os.path.join(stacks_dir, stack, 'parameters', f"{environment}.json"),
+        "policy": os.path.join(stacks_dir, stack, 'policy.json'),
     }
     try:
         if action == 'create':
