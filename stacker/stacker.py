@@ -96,7 +96,19 @@ def action_update(stack, files, opts):
 
 
 def action_delete(stack, files, opts):
-    pass
+    print(f"""
+Attempt to delete '{stack}' Stack.
+This action CANNOT be undone.
+Are you ABSOLUTELY sure?
+    """.strip())
+    print()
+    confirm = input('Please type in the name of the stack to confirm: ')
+    if confirm == stack:
+        cfn('delete-stack', '--stack-name', stack)
+        cfn('wait', 'stack-delete-complete', '--stack-name', stack)
+    else:
+        print_error('Aborted.')
+        return
 
 
 def action_validate(stack, files, opts):
