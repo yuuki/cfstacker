@@ -18,10 +18,11 @@ def print_error(msg):
     print("\033[91m", msg, file=sys.stderr)
 
 
-def cfn(action, arg):
+def cfn(action, *args):
+    arg = ' '.join(args)
     print_command(f"aws cloudformation {action} {arg}")
     if not cfn_dryrun:
-        subprocess.call("aws", "cloudformation", cmd.split())
+        subprocess.call("aws", "cloudformation", action, arg.split())
 
 
 def _template_body(file):
