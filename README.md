@@ -13,3 +13,7 @@ A CLI tool to manage AWS CloudFormation stack in Python.
 ## License
 
 [MIT][license]
+
+## Thanks
+
+[chrolis](https://github.com/chrolis)
