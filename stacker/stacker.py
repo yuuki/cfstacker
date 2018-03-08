@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
+from datetime import datetime
 import optparse
 import os
 import subprocess
@@ -55,12 +56,43 @@ def _capabilities(capabilities):
         return f"--capabilities {capabilities}"
 
 
+def set_stack_policy(stack):
+    cfn('set-stack-policy', '--stack-name', stack, _stack_policy_body)
+
+
 def action_create(stack, files, opts):
-    pass
+    cfn('create-stack', '--stack-name', stack,
+        _template_body(files['template']),
+        _parameters(files['parameters']),
+        _capabilities(files['capabilities']),
+        '--disable-rollback'
+        )
+    cfn('wait', 'stack-create-complete', '--stack-name', stack)
 
 
 def action_update(stack, files, opts):
-    pass
+    date = datetime.now().strftime('%Y%m%d%H%M%S')
+    change_set_name = f"{stack}-change-set-{date}"
+
+    cfn('create-change-set', '--stack-name', stack,
+        _template_body(files['template']),
+        _parameters(files['parameters']),
+        _capabilities(files['capabilities']),
+        '--change-set-name', change_set_name,
+        )
+    cfn('wait', 'change-set-create-complete', '--stack-name', stack,
+        '--change-set-name', change_set_name)
+    cfn('describe-change-set', '--stack-name', stack,
+        '--change-set-name', change_set_name)
+
+    if input('do update? [y|N]: ') != 'y':
+        return
+
+    set_stack_policy(stack)
+
+    cfn('execute-change-set', '--stack-name',
+        stack, '--change-set-name', change_set_name)
+    cfn('wait', 'stack-update-complete', '--stack-name', stack)
 
 
 def action_delete(stack, files, opts):
