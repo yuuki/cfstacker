@@ -57,8 +57,9 @@ def _capabilities(capabilities):
         return f"--capabilities {capabilities}"
 
 
-def set_stack_policy(stack):
-    cfn('set-stack-policy', '--stack-name', stack, _stack_policy_body)
+def set_stack_policy(stack, policy_file):
+    cfn('set-stack-policy', '--stack-name',
+        stack, _stack_policy_body(policy_file))
 
 
 def action_create(stack, files, opts):
@@ -89,7 +90,7 @@ def action_update(stack, files, opts):
     if input('do update? [y|N]: ') != 'y':
         return
 
-    set_stack_policy(stack)
+    set_stack_policy(stack, files['policy'])
 
     cfn('execute-change-set', '--stack-name',
         stack, '--change-set-name', change_set_name)
@@ -195,7 +196,10 @@ def main():
             raise UsageError()
     except subprocess.CalledProcessError as err:
         print_error(f"command error: {err.cmd}")
-        print_error(err.output)
+        if err.output is None:
+            print_error('no output')
+        else:
+            print_error(err.output)
         sys.exit(err.returncode)
     except ActionError:
         sys.exit(128)
