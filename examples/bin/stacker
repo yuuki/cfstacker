@@ -1,0 +1,3 @@
+#!/bin/bash
+export PYTHONPATH="${PWD}/..:${PYTHONPATH}"
+exec python3 -mstacker.stacker $@
