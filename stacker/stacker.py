@@ -23,7 +23,8 @@ def cfn(action, *args):
     arg = ' '.join(args)
     print_command(f"aws cloudformation {action} {arg}")
     if not cfn_dryrun:
-        subprocess.run(["aws", "cloudformation", action]+arg.split())
+        subprocess.run(["aws", "cloudformation", action] +
+                       arg.split(), check=True)
 
 
 def _template_body(file):
@@ -108,7 +109,7 @@ Are you ABSOLUTELY sure?
         cfn('wait', 'stack-delete-complete', '--stack-name', stack)
     else:
         print_error('Aborted.')
-        return
+        raise ActionError
 
 
 def action_validate(stack, files, opts):
@@ -133,6 +134,10 @@ Options:
 
 
 class UsageError(BaseException):
+    pass
+
+
+class ActionError(BaseException):
     pass
 
 
@@ -173,15 +178,21 @@ def main():
     }
     try:
         if action == 'create':
-            action_create(stack_name, files, opts)
+            sys.exit(action_create(stack_name, files, opts))
         elif action == 'update':
-            action_update(stack_name, files, opts)
+            sys.exit(action_update(stack_name, files, opts))
         elif action == 'delete':
-            action_delete(stack_name, files, opts)
+            sys.exit(action_delete(stack_name, files, opts))
         elif action == 'validate':
-            action_validate(stack_name, files, opts)
+            sys.exit(action_validate(stack_name, files, opts))
         else:
             raise UsageError()
+    except subprocess.CalledProcessError as err:
+        print_error(f"command error: {err.cmd}")
+        print_error(err.output)
+        sys.exit(err.returncode)
+    except ActionError:
+        sys.exit(128)
     except UsageError:
         parser.print_help()
         sys.exit(129)
