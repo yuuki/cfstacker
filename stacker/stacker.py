@@ -51,7 +51,7 @@ def _stack_policy_body(file):
 
 
 def _capabilities(capabilities):
-    if capabilities == '':
+    if capabilities is None or capabilities == '':
         return ''
     else:
         return f"--capabilities {capabilities}"
