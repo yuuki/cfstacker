@@ -65,7 +65,7 @@ def action_create(stack, files, opts):
     cfn('create-stack', '--stack-name', stack,
         _template_body(files['template']),
         _parameters(files['parameters']),
-        _capabilities(files['capabilities']),
+        _capabilities(opts.capabilities),
         '--disable-rollback'
         )
     cfn('wait', 'stack-create-complete', '--stack-name', stack)
@@ -78,7 +78,7 @@ def action_update(stack, files, opts):
     cfn('create-change-set', '--stack-name', stack,
         _template_body(files['template']),
         _parameters(files['parameters']),
-        _capabilities(files['capabilities']),
+        _capabilities(opts.capabilities),
         '--change-set-name', change_set_name,
         )
     cfn('wait', 'change-set-create-complete', '--stack-name', stack,
@@ -152,7 +152,7 @@ def main():
     parser.add_option('-p', '--profile', dest='profile')
     parser.add_option('--dry-run', dest='dryrun', action='store_true')
 
-    opts, args = parser.parse_args()
+    (opts, args) = parser.parse_args()
     if len(args) != 2:
         parser.print_help()
         sys.exit(129)
@@ -171,9 +171,15 @@ def main():
     environment = opts.environment if opts.environment is not None else 'prod'
     stack_name = opts.stack_name if opts.stack_name is not None else f"{project}-{environment}-{stack}"
 
+    template_file = os.path.join(stacks_dir, stack, 'template.yml')
+    env_template_file = os.path.join(
+        stacks_dir, stack, 'templates', environment+'.yml')
+    if os.path.exists(env_template_file):
+        template_file = env_template_file
+
     files = {
-        "template": f"{stacks_dir}/{stack}/template.yml",
-        "parameter": f"{stacks_dir}/{stack}/parameters/{environment}.yml",
+        "template": template_file,
+        "parameters": f"{stacks_dir}/{stack}/parameters/{environment}.yml",
         "policy": f"{stacks_dir}/{stack}/policy.yml",
     }
     try:
