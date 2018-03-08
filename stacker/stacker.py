@@ -12,11 +12,11 @@ cfn_dryrun = False
 
 
 def print_command(*cmd):
-    print("\033[92m", ' '.join(cmd))
+    print("\033[92m", ' '.join(cmd), "\033[0m")
 
 
 def print_error(msg):
-    print("\033[91m", msg, file=sys.stderr)
+    print("\033[91m", msg, "\033[0m", file=sys.stderr)
 
 
 def cfn(action, *args):
