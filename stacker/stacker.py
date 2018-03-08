@@ -131,7 +131,7 @@ Options:
     -c, --capabilities  specify capabilities
     -e, --environment   specify environment
     -p, --profile       specify AWS_PROFILE
-"""
+""".strip()
 
 
 class UsageError(BaseException):
@@ -155,7 +155,7 @@ def main():
 
     (opts, args) = parser.parse_args()
     if len(args) != 2:
-        parser.print_help()
+        parser.print_usage()
         sys.exit(129)
 
     global cfn_dryrun
@@ -204,7 +204,7 @@ def main():
     except ActionError:
         sys.exit(128)
     except UsageError:
-        parser.print_help()
+        parser.print_usage()
         sys.exit(129)
 
 
