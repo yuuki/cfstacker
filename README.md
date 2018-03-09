@@ -32,6 +32,9 @@ With homebrew:
 brew install --HEAD yuuki/stacker/stacker
 ```
 
+Or with pip:
+
+
 ```shell
 pip3 install git+https://github.com/yuuki/stacker
 ```
