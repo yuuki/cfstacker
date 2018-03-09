@@ -39,6 +39,10 @@ Or with pip:
 pip3 install git+https://github.com/yuuki/stacker
 ```
 
+## Requirements
+
+- [AWS CLI](https://aws.amazon.com/jp/cli/)
+
 ## Directory Layout
 
 ```shell
