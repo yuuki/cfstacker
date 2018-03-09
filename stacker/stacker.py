@@ -31,8 +31,7 @@ def _template_body(file):
     if os.path.exists(file):
         return f"--template-body file://{file}"
     else:
-        print_error(f"template file {file} not found")
-        sys.exit(1)
+        raise StackerError(f"template file {file} not found")
 
 
 def _parameters(file):
@@ -46,8 +45,7 @@ def _stack_policy_body(file):
     if os.path.exists(file):
         return f"--stack-policy-body file://{file}"
     else:
-        print_error(f"policy file {file} not found")
-        sys.exit(1)
+        raise StackerError(f"policy file {file} not found")
 
 
 def _capabilities(capabilities):
@@ -109,8 +107,7 @@ Are you ABSOLUTELY sure?
         cfn('delete-stack', '--stack-name', stack)
         cfn('wait', 'stack-delete-complete', '--stack-name', stack)
     else:
-        print_error('Aborted.')
-        raise ActionError
+        raise StackerError('Aborted.')
 
 
 def action_validate(stack, files, opts):
@@ -138,8 +135,12 @@ class UsageError(BaseException):
     pass
 
 
-class ActionError(BaseException):
-    pass
+class StackerError(BaseException):
+    def __init__(self, msg):
+        self._msg = msg
+
+    def msg(self):
+        return self._msg
 
 
 def main():
@@ -201,7 +202,8 @@ def main():
         else:
             print_error(err.output)
         sys.exit(err.returncode)
-    except ActionError:
+    except StackerError as err:
+        print_error(err)
         sys.exit(128)
     except UsageError:
         parser.print_usage()
