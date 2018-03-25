@@ -8,4 +8,4 @@ Resources:
     Type: "AWS::S3::Bucket"
     Properties:
       AccessControl: "Private"
-      BucketName: !Sub "stacker-example-${Environment}"
+      BucketName: !Sub "cfstacker-example-${Environment}"

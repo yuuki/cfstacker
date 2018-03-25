@@ -1,17 +1,17 @@
 from setuptools import setup, find_packages
 
-import stacker
+import cfstacker
 
 setup(
-    name='stacker',
-    version=stacker.version,
+    name='cfstacker',
+    version=cfstacker.version,
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'stacker = stacker.stacker:main',
+            'cfstacker = cfstacker.cfstacker:main',
         ],
     },
     author='yuuki',
     author_email='yuki.tsubo@gmail.com',
-    url='https://github.com/yuuki/stacker',
+    url='https://github.com/yuuki/cfstacker',
 )

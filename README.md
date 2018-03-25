@@ -1,14 +1,14 @@
-# stacker
+# cfstacker
 
-[license]: https://github.com/yuuki/stacker/blob/master/LICENSE
+[license]: https://github.com/yuuki/cfstacker/blob/master/LICENSE
 
 A CLI tool to manage AWS CloudFormation stack in Python.
 
 ## Usage
 
 ```shell
-% stacker
-Usage: stacker.py [OPTIONS] ACTION STACK
+% cfstacker
+Usage: cfstacker.py [OPTIONS] ACTION STACK
 
 Actions:
     create      create stack
@@ -29,14 +29,14 @@ Options:
 With homebrew:
 
 ```shell
-brew install --HEAD yuuki/stacker/stacker
+brew install --HEAD yuuki/cfstacker/cfstacker
 ```
 
 Or with pip:
 
 
 ```shell
-pip3 install git+https://github.com/yuuki/stacker
+pip3 install git+https://github.com/yuuki/cfstacker
 ```
 
 ## Requirements
@@ -50,7 +50,7 @@ pip3 install git+https://github.com/yuuki/stacker
 examples/
 ├── Makefile
 ├── bin
-│   └── stacker
+│   └── cfstacker
 └── stacks
     ├── iam
     │   ├── parameters
