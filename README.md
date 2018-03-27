@@ -41,6 +41,7 @@ pip3 install git+https://github.com/yuuki/cfstacker
 
 ## Requirements
 
+- Python 3.6
 - [AWS CLI](https://aws.amazon.com/jp/cli/)
 
 ## Directory Layout
