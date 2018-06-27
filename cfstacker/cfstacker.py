@@ -92,7 +92,9 @@ def action_update(stack, files, opts):
 
     cfn('execute-change-set', '--stack-name',
         stack, '--change-set-name', change_set_name)
-    cfn('wait', 'stack-update-complete', '--stack-name', stack)
+
+    if not opts.nowait:
+        cfn('wait', 'stack-update-complete', '--stack-name', stack)
 
 
 def action_delete(stack, files, opts):
@@ -128,6 +130,8 @@ Options:
     -c, --capabilities  specify capabilities
     -e, --environment   specify environment
     -p, --profile       specify AWS_PROFILE
+
+    --no-wait           do not execute 'aws cloudformation wait' when stack-update-complete
 """.strip()
 
 
@@ -153,6 +157,7 @@ def main():
     parser.add_option('-e', '--environment', dest='environment')
     parser.add_option('-p', '--profile', dest='profile')
     parser.add_option('--dry-run', dest='dryrun', action='store_true')
+    parser.add_option('--no-wait', dest='nowait', action='store_false')
 
     (opts, args) = parser.parse_args()
     if len(args) != 2:
