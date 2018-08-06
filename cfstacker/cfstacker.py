@@ -123,11 +123,12 @@ Actions:
     validate    validate template
 
 Options:
-    -n, --dry-run       only shows command-lines
     -s, --stack-name    specify stack name
     -c, --capabilities  specify capabilities
     -e, --environment   specify environment
     -p, --profile       specify AWS_PROFILE
+
+    --dry-run           only shows command-lines
 """.strip()
 
 
